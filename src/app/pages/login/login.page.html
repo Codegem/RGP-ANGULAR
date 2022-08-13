@@ -1,0 +1,42 @@
+<div
+  class="d-flex justify-content-center align-items-center w-100 h-100 p-5 mt-5 mb-4"
+>
+  <div class="custom-card d-flex flex-column justify-content-center">
+    <h1 class="text-center p-3 text-light">Login</h1>
+    <div class="form-group mb-1">
+      <input
+        type="text"
+        class="form-control mb-2 shadow-none"
+        placeholder="Username"
+        [formControl]="getFormControl('username')"
+      />
+    </div>
+
+    <div class="form-group mb-2">
+      <input
+        type="password"
+        class="form-control shadow-none"
+        placeholder="Password"
+        [formControl]="getFormControl('password')"
+      />
+    </div>
+
+    <div class="m-1">
+      <p
+        class="mb-0 text-center text-danger align-self-center"
+        *ngIf="showLoginError | async"
+      >
+        Bad login credentials
+      </p>
+    </div>
+
+    <button
+      class="btn btn-warning mt-2"
+      [disabled]="loginForm.invalid"
+      (click)="validateLogin()"
+      (keydown)="onKeyDown($event)"
+    >
+      Login
+    </button>
+  </div>
+</div>

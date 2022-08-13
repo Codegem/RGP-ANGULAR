@@ -1,0 +1,11 @@
+<div
+  class="d-flex flex-lg-row flex-sm-column flex-column justify-content-center align-items-center"
+>
+  <ng-container *ngFor="let data of cardData; first as isFirst">
+    <app-info-card
+      [class]="isFirst ? ['me-lg-5','me-sm-0','mb-sm-5','mb-lg-0','mb-5'] : null"
+      [cardData]="data"
+      (click)="openTawkTo()"
+    ></app-info-card>
+  </ng-container>
+</div>

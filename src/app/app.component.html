@@ -1,0 +1,20 @@
+<body class="background">
+  <header class="mb-5 pb-4">
+    <app-nav-bar></app-nav-bar>
+  </header>
+  <main>
+    <div class="container-fluid">
+      <div class="d-flex justify-content-center mb-4">
+        <img
+          src="../assets/images/Runescape-Gold2.png"
+          alt="rune-gp-logo"
+          class="align-self-center logo"
+        />
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+    <app-payments></app-payments>
+    <app-footer></app-footer>
+  </main>
+  <angular-tawk [id]="tawkId" isVisibleOnMobile="yes"></angular-tawk>
+</body>

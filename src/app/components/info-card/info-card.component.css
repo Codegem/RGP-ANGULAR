@@ -1,0 +1,43 @@
+.card{
+    width: 25rem;
+    height: 100%;
+    transition: 0.3s ease-in-out;
+    background: none !important;
+    box-shadow: 0px 0px 10px #89dd9b;
+    border: none;
+}
+
+.card-body{
+    background: rgba(26, 170, 133, 0.6);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.card-image{
+    background: rgba(238, 200, 11, 0.4);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.card:hover{
+    cursor: pointer;
+    box-shadow: 5px 5px 5px 5px #080808;
+    transition: 0.3s ease-in-out;
+}
+
+.card-img-top{
+    width: 12rem;
+    height: 12rem;
+}
+
+p{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #F3F2F6;
+}
+
+.price {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: gold;
+}

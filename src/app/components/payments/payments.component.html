@@ -1,0 +1,7 @@
+<div
+  class="d-flex flex-row justify-content-center align-items-center mt-4 bg-light p-4"
+>
+  <ng-container *ngFor="let paymentType of paymentsList; let last = last">
+    <img [src]="paymentType" alt="payment-type" [class.me-4]="!last" />
+  </ng-container>
+</div>

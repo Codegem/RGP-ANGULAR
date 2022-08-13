@@ -1,0 +1,67 @@
+<div class="card bg-none">
+  <div class="card-image d-flex justify-content-center p-3">
+    <img [src]="cardData.imageUrl" class="card-img-top" alt="some-img" />
+  </div>
+  <div class="card-body">
+    <h5 class="text-center">{{ cardData.coficient }}$</h5>
+    <div
+      class="d-flex flex-column"
+      [class.flex-column-reverse]="changeControls"
+    >
+      <div class="input-group mb-2 mr-sm-2">
+        <div
+          class="input-group-prepend"
+          [placement]="!changeControls ? 'top' : 'bottom'"
+          [ngbTooltip]="'Cash'"
+        >
+          <div class="input-group-text">
+            <mat-icon
+              class="me-1 text-success"
+              fontSet="material-icons-round"
+              inline
+              >&#xef63;</mat-icon
+            >
+          </div>
+        </div>
+        <input
+          [readonly]="changeControls"
+          type="number"
+          class="form-control shadow-none"
+          [formControl]="getFormControl('price')"
+        />
+      </div>
+      <button
+        class="btn btn-clean btn-icon changeControl pt-1 pb-2 align-self-center"
+        placement="left"
+        [ngbTooltip]="changeControls ? 'Change to GP' : 'Change to cash'"
+        (click)="toggleControls()"
+      >
+        <mat-icon class="me-1 text-light" fontSet="material-icons-round" inline
+          >&#xe863;
+        </mat-icon>
+      </button>
+      <div class="input-group mb-2 mr-sm-2">
+        <div
+          class="input-group-prepend"
+          [placement]="changeControls ? 'top' : 'bottom'"
+          [ngbTooltip]="'GP'"
+        >
+          <div class="input-group-text">
+            <mat-icon
+              class="me-1 text-warning"
+              fontSet="material-icons-round"
+              inline
+              >&#xe8e0;</mat-icon
+            >
+          </div>
+        </div>
+        <input
+          [readonly]="!changeControls"
+          type="number"
+          class="form-control shadow-none"
+          [formControl]="getFormControl('gp')"
+        />
+      </div>
+    </div>
+  </div>
+</div>

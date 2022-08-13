@@ -1,0 +1,20 @@
+.card{
+    width: 30rem;
+    height: 100%;
+    padding: 3.3rem;
+    transition: 0.3s ease-in-out;
+    background: rgba(26, 170, 133, 0.6);
+    box-shadow: 0px 0px 10px #89dd9b;
+    border: none;
+}
+
+.card-img-top{
+    width: 20rem;
+    height: 10rem;
+}
+
+.changeControl, .changeControl:focus, .changeControl:hover{
+    width: 2rem;
+    border: none;
+    outline: none;
+}

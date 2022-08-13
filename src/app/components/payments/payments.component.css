@@ -1,0 +1,11 @@
+img{
+    max-width: 4rem;
+    min-width: 4rem;
+    height: 100%;
+    transition: all .25s ease-in-out;
+}
+
+img:hover{
+    transform: scale(1.25);
+    transition: all .25s ease-in-out;
+}

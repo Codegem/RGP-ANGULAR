@@ -1,0 +1,12 @@
+.nav-link{
+    color: white !important;
+    &:hover, :focus{
+        color: yellow !important;
+    }
+    &.disabled{
+        color: gray !important;
+    }
+    &.active{
+        color: yellow !important;
+    }
+}

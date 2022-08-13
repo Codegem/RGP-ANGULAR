@@ -1,0 +1,44 @@
+<nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark p-3" ngbNav>
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="['/']" *ngIf="!isExpanded"
+      ><img src="../../../assets/images/logo3.png" alt="logo"
+    /></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-target="#mobileNav"
+      aria-controls="mobileNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      (click)="collapse.toggle()"
+      [attr.aria-expanded]="!isExpanded"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse mt-2"
+      id="mobileNav"
+      #collapse="ngbCollapse"
+      [ngbCollapse]="!isExpanded"
+    >
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ng-container *ngFor="let nav of navElements">
+          <li class="nav-item" ngbNavItem>
+            <a
+              class="nav-link"
+              [routerLink]="nav.url"
+              [class.active]="
+                (activatedUrl$ | async) === nav.url &&
+                nav.title !== NavItems.Contact
+              "
+              (click)="nav.title === NavItems.Contact ? toggleTawk() : null"
+              ngbNavLink
+            >
+              {{ nav.title }}
+            </a>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,26 @@
+body {
+  overflow-y: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.background {
+    background-image: url(../assets/images/background.jpeg);
+  background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
+}
+
+.logo{
+  min-width: 8rem;
+  max-width: 12rem;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    overflow-y: scroll;
+  }
+
+}
