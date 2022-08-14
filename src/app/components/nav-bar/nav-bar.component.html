@@ -25,7 +25,7 @@
         <ng-container *ngFor="let nav of navElements">
           <li class="nav-item" ngbNavItem>
             <a
-              class="nav-link"
+              class="nav-link pointer"
               [routerLink]="nav.url"
               [class.active]="
                 (activatedUrl$ | async) === nav.url &&
@@ -38,6 +38,20 @@
             </a>
           </li>
         </ng-container>
+        <li
+          class="nav-item"
+          ngbNavItem
+          *ngIf="adminService.isLoggedIn$ | async"
+        >
+          <a
+            class="nav-link pointer"
+            [routerLink]="null"
+            (click)="adminService.logout()"
+            ngbNavLink
+          >
+            Logout
+          </a>
+        </li>
       </ul>
     </div>
   </div>

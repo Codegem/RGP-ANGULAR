@@ -5,6 +5,7 @@ import { BuyPage } from './pages/buy/buy.page';
 import { HomePage } from './pages/home/home.page';
 import { LoginPage } from './pages/login/login.page';
 import { SellPage } from './pages/sell/sell.page';
+import { AdminGuard } from './_shared/guards/admin.guard';
 import { LoginAdminGuard } from './_shared/guards/login-admin.guard';
 
 const routes: Routes = [
@@ -12,10 +13,14 @@ const routes: Routes = [
   { path: 'buy', component: BuyPage },
   { path: 'sell', component: SellPage },
   { path: 'login', component: LoginPage, canActivate: [LoginAdminGuard] },
-  { path: 'admin', component: AdminPage, canActivate: [LoginAdminGuard] },
+  {
+    path: 'admin',
+    component: AdminPage,
+    canActivate: [AdminGuard],
+  },
   {
     path: '**',
-    redirectTo: '/',
+    redirectTo: 'home',
   },
 ];
 

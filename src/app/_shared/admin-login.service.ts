@@ -1,32 +1,41 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {
+  Auth,
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut,
+  User,
+} from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { RequiredModulesService } from './required-modules.service';
-
-export interface PricingsInterface {
-  sellOS: number;
-  sellRs3: number;
-  buyOS: number;
-  buyRs3: number;
-}
+import { DataManagementService } from './data-management.service';
+import { CustomError } from './models/errors';
+import { PricingsInterface } from './models/pricings';
+import { LoginForm } from './models/user-auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminLoginService {
-  private dbUrl = environment.DB_URL;
-
   item!: string;
-  pricings!: PricingsInterface;
+  logedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  isLoggedIn$: Observable<boolean> = this.logedIn.asObservable();
+  user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
   constructor(
-    private _http: HttpClient,
-    private _requiredModulesService: RequiredModulesService
+    private _router: Router,
+    private _auth: Auth,
+    private _dataManagementService: DataManagementService
   ) {
     this.getStorageItems();
-    this.getJSON().subscribe((data) => {
-      this.pricings = data;
+    this._auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.user.next(user);
+        this.logedIn.next(true);
+      } else {
+        this.logedIn.next(false);
+      }
     });
   }
 
@@ -38,9 +47,40 @@ export class AdminLoginService {
     this._saveToDB(value);
   }
 
-  getJSON(): Observable<PricingsInterface> {
-    return this._http.get<PricingsInterface>(this.dbUrl);
+  private _saveToDB(value: PricingsInterface) {
+    this._dataManagementService.addPricings(value);
   }
 
-  private _saveToDB(value: PricingsInterface) {}
+  public login(value: LoginForm): Promise<any> {
+    return this._login(value);
+  }
+
+  private _login(value: LoginForm): Promise<any> {
+    return signInWithEmailAndPassword(this._auth, value.email, value.password)
+      .then((res) => {
+        this.user.next(res.user);
+        this.logedIn.next(true);
+        return true;
+      })
+      .catch((err) => {
+        return false;
+      });
+  }
+
+  logout() {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        this.user.next(null);
+        this.logedIn.next(false);
+        this._router.navigate(['']);
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  }
 }
+
+export const handleError = (error: CustomError) => {
+  return error.message;
+};

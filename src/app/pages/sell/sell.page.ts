@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs';
-import {
-  AdminLoginService,
-  PricingsInterface,
-} from 'src/app/_shared/admin-login.service';
+import { PricingsInterface } from 'src/app/_shared/models/pricings';
 import { BaseComponent } from './../../components/base.component';
 import { CalculatorCardData } from './../../components/calculator-card/calculator-card.component';
+import { DataManagementService } from './../../_shared/data-management.service';
 
 @Component({
   selector: 'app-sell',
@@ -17,13 +15,12 @@ export class SellPage extends BaseComponent implements OnInit {
 
   cardData: CalculatorCardData[] = [];
 
-  constructor(private _adminLoginService: AdminLoginService) {
+  constructor(private _dataManagementService: DataManagementService) {
     super();
   }
 
   ngOnInit(): void {
-    this._adminLoginService
-      .getJSON()
+    this._dataManagementService.pricingsData$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: any) => {
         this.pricings = data;
@@ -32,7 +29,7 @@ export class SellPage extends BaseComponent implements OnInit {
   }
 
   addCardData() {
-    this.cardData.push(
+    this.cardData = [
       {
         imageUrl: '../../assets/images/oldschool.png',
         coficient: this.pricings.sellOS,
@@ -42,7 +39,7 @@ export class SellPage extends BaseComponent implements OnInit {
         imageUrl: '../../assets/images/rs3full.png',
         coficient: this.pricings.sellRs3,
         isSelling: true,
-      }
-    );
+      },
+    ];
   }
 }

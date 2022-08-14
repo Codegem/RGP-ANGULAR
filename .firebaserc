@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "rune-gp": {
+      "hosting": {
+        "rune-gp": [
+          "rune-gp"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "rune-gp": "rune-gp"
+  }
+}

@@ -7,13 +7,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { environment } from './../../../environments/environment';
+import { LoginForm } from 'src/app/_shared/models/user-auth';
 import { AdminLoginService } from './../../_shared/admin-login.service';
-
-export interface LoginForm {
-  username?: string;
-  password?: string;
-}
 
 @Component({
   selector: 'app-login',
@@ -34,9 +29,9 @@ export class LoginPage implements OnInit {
   );
 
   constructor(
-    private _router: Router,
     private _fb: FormBuilder,
-    private _adminLoginService: AdminLoginService
+    private _adminLoginService: AdminLoginService,
+    private _router: Router
   ) {
     this.loginForm = this.initLoginForm();
   }
@@ -45,7 +40,7 @@ export class LoginPage implements OnInit {
 
   initLoginForm() {
     return this._fb.group({
-      username: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
@@ -54,18 +49,24 @@ export class LoginPage implements OnInit {
     return this.loginForm.get(key) as FormControl;
   }
 
-  login() {
-    this._router.navigate(['/admin']);
+  login(value: LoginForm) {
+    this._adminLoginService
+      .login(value)
+      .then((res) => {
+        if (!res) {
+          this.showLoginError.next(true);
+        } else {
+          this._router.navigate(['/admin']);
+        }
+      })
+      .catch((err) => {
+        this.showLoginError.next(true);
+      });
   }
 
   validateLogin() {
-    if (
-      this.loginForm.value['username'] === environment.SECRET_LOGIN &&
-      this.loginForm.value['password'] === environment.SECRET_PASSWORD
-    ) {
-      this.login();
+    if (this.loginForm.valid) {
+      this.login(this.loginForm.value);
     }
-    this.showLoginError.next(true);
-    return;
   }
 }

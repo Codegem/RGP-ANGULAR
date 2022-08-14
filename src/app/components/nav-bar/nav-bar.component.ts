@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { AngularTawkComponent } from 'angular-tawk';
 import { BehaviorSubject, filter, Observable, takeUntil } from 'rxjs';
@@ -8,7 +14,7 @@ import { BaseComponent } from './../base.component';
 
 interface NavElements {
   title: string;
-  url: string;
+  url: string | null;
 }
 
 enum NavItems {
@@ -17,11 +23,12 @@ enum NavItems {
   Buy = 'Buy',
   Sell = 'Sell',
   Login = 'Login',
+  Admin = 'Admin',
 }
 
 const NavBarElements: NavElements[] = [
   { title: NavItems.Home, url: '/' },
-  { title: NavItems.Contact, url: '' },
+  { title: NavItems.Contact, url: null },
   { title: NavItems.Buy, url: '/buy' },
   { title: NavItems.Sell, url: '/sell' },
 ];
@@ -30,6 +37,7 @@ const NavBarElements: NavElements[] = [
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavBarComponent extends BaseComponent implements OnInit {
   @ViewChild('angular-tawk') tawkTo: AngularTawkComponent | undefined;
@@ -40,12 +48,14 @@ export class NavBarComponent extends BaseComponent implements OnInit {
   activatedUrl$: Observable<string> = this.activatedUrl.asObservable();
 
   public navElements = NavBarElements;
+  readonly defaultNavElements = NavBarElements;
   readonly NavItems = NavItems;
 
   constructor(
     private _router: Router,
     public adminService: AdminLoginService,
-    private _tawkService: TawkToService
+    private _tawkService: TawkToService,
+    private _cdr: ChangeDetectorRef
   ) {
     super();
 
@@ -60,15 +70,21 @@ export class NavBarComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.showLogin();
+    this.adminService.isLoggedIn$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        this.navElements = this.defaultNavElements;
+        this.showLogin(res);
+      });
   }
 
-  showLogin() {
+  showLogin(show: boolean) {
     if (JSON.parse(this.adminService.item) === 'true') {
-      this.navElements = [
-        ...this.navElements,
-        { title: NavItems.Login, url: '/login' },
-      ];
+      let authItem: NavElements = show
+        ? { title: NavItems.Admin, url: '/admin' }
+        : { title: NavItems.Login, url: '/login' };
+      this.navElements = [...this.navElements, authItem];
+      this._cdr.markForCheck();
     }
   }
 

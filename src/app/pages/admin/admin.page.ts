@@ -7,10 +7,9 @@ import {
 } from '@angular/forms';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from 'src/app/components/base.component';
-import {
-  AdminLoginService,
-  PricingsInterface,
-} from './../../_shared/admin-login.service';
+import { DataManagementService } from 'src/app/_shared/data-management.service';
+import { PricingsInterface } from 'src/app/_shared/models/pricings';
+import { AdminLoginService } from './../../_shared/admin-login.service';
 
 type PricingForm = PricingsInterface;
 
@@ -20,17 +19,17 @@ type PricingForm = PricingsInterface;
   styleUrls: ['./admin.page.css'],
 })
 export class AdminPage extends BaseComponent implements OnInit {
-  pricings!: PricingsInterface;
+  pricings!: PricingsInterface | null;
   pricingsForm!: FormGroup;
 
   constructor(
     private _adminLoginService: AdminLoginService,
+    private _dataManagementService: DataManagementService,
     private _fb: FormBuilder
   ) {
     super();
 
-    this._adminLoginService
-      .getJSON()
+    this._dataManagementService.pricingsData$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data) => {
         this.pricings = data;
@@ -42,10 +41,10 @@ export class AdminPage extends BaseComponent implements OnInit {
 
   private _initPricingsForm() {
     return this._fb.group({
-      sellOS: [this.pricings.sellOS, Validators.required],
-      sellRs3: [this.pricings.sellRs3, Validators.required],
-      buyOS: [this.pricings.buyOS, Validators.required],
-      buyRs3: [this.pricings.buyRs3, Validators.required],
+      sellOS: [this.pricings?.sellOS, Validators.required],
+      sellRs3: [this.pricings?.sellRs3, Validators.required],
+      buyOS: [this.pricings?.buyOS, Validators.required],
+      buyRs3: [this.pricings?.buyRs3, Validators.required],
     });
   }
 

@@ -1,6 +1,6 @@
 img{
     max-width: 4rem;
-    min-width: 4rem;
+    min-width: 1.75rem;
     height: 100%;
     transition: all .25s ease-in-out;
 }
